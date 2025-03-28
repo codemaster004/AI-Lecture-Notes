@@ -5,3 +5,9 @@
 *.log
 *.out
 *.synctex.gz
+
+# Ignore template folder
+Hello/
+
+# Ignore .idea
+.idea/
