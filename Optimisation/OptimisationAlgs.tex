@@ -120,11 +120,36 @@ Random Search I believe was explained on the lectures quite well. Basic outline 
 
 \section{Simulated Annealing}
 
+Simulated Annealing (SA), is an optimization algorithm used to find a near-optimal solution for complex problems, especially those with a large search space and many local optima. Unlike traditional greedy algorithms, SA allows occasional bad moves to escape local minima, improving its ability to find the global optimum.
+
+\begin{equation}
+    h\left(\Delta \mathcal L, T\right) = \frac{1}{1 + e^{\frac{\Delta E}{cT}}}
+\end{equation}
+
+Temperature (T) defines the probability of accepting worse solutions. Starts high and decreases over time, this is only for worse solutions, probability to accept a better solutions is 1. At the temperature is high the model is allowed to make more risky, less optimal moves, however as the temperature cools down only the better moves are allowed more often, ensuring the final solution ends up in a minima.
+
+Change in Loss ($\mathcal L$) the bigger the change the smaller probability to accept it.
+
+$c$ is a constant hyper-parameter for scaling of how much the algorithm is sensitive to huge loss and temperature changes. 
+
+Steps of SA:
+\begin{itemize}
+    \item Initialize, start with an initial solution $p_t$ and an initial high temperature (T)
+    \item Generate a Neighboring Solution, modify the current solution to create a new candidate solution $p_{t+1}$
+    \item Evaluate Solutions, compute the loss function for both $p_t$ and $p_{t+1}$
+    Acceptance Criteria
+    \item Accept If $p_{t+1}$ is better than $p_t$, accept it as the new solution.
+    \item Accept If $p_{t+1}$ is worse, accept it with some probability to allow escaping local minima.
+    \item Cool Down, decrease the temperature $T$ according to a cooling schedule.
+    \item Repeat, continue until the system "cools down" or a stopping criterion is met.
+\end{itemize}
+
+
 \section{Gradient Descent/Search}
 
 This is the most commonly used method, especially when it comes to Neural Networks, however it is also the first one that requires us to have knowledge of the exact formula of the loss function. All the previous methods just used sampled values from all possible solutions and corresponding loss. Gradient Descent can be seen as similar to explained above Random Search, in the sense that it is an iterative method, where it differs is the way how the new point is obtained. Using the information about the current value of loss and the formula to obtain it, we can calculate how much and in what direction we should move from current point to obtain a point with lower loss.
 
-\textit{How is it done?} First we need to be able to calculate the Gradient of the function, it is a partial derivative (\textit{Derivative as we lear in high school, just with respect to specified letter}) for all the adjustable components that the loss function depends on, the gradient tells us the direction to nudge each component to increase the loss. \textit{Brace your selfs, the math is coming.}
+\textit{How is it done?} First we need to be able to calculate the Gradient of the function, it is a partial derivative (\textit{Derivative as we learn in high school, just with respect to specified letter}) for all the adjustable components that the loss function depends on, the gradient tells us the direction to nudge each component to increase the loss. \textit{Brace your selfs, the math is coming.}
 
 \begin{align*}
     \mathcal{L}(a,b) &= \frac{1}{N}\sum_{i=1}^N{(y_i - (ax_i + b))^2}\\\\
@@ -167,7 +192,7 @@ And as the partial derivative with respect to $b$ is similar, here is the formul
     \end{minipage}
 \end{figure}
 
-With that after plugging in the numbers we get the gradient, so we know in which way to move as the point ti increase the loss, as our task is to minimize the loss we just go in the opposite (negative) direction. Lets again consider $p$ as the current state of our line fitting model. Now to update our model with the gradient we do this:
+With that after plugging in the numbers we get the gradient, so we know in which way to move as the point to increase the loss, as our task is to minimize the loss we just go in the opposite (negative) direction. Lets again consider $p$ as the current state of our line fitting model. Now to update our model with the gradient we do this:
 
 \begin{equation}
     p_{t+1} = p_t - \eta\nabla\mathcal L
@@ -187,6 +212,9 @@ I hope when written like that, it is at least kind of understandable. Moving on,
 In practice Gradient Descent has a problem, remember the moment when we sum over the Residual of EVERY POINT in out dataset? And as computational power and VRAM are expensive, a SGD comes with a solution. Instead of loading an entire dataset at once we load a single example and calculate the gradient for this single example, this results in a lot less smooth descent, and possibly longer training time, with in the worst case scenario requirements to use scheduling for the learning rate, but on the up side it is less computationally demanding and sometimes leads to better solutions (\textit{Why? The word is not sure, maybe due to it's noisiness it can easier escape narrow local minima.}).
 
 The most commonly used option however is the middle ground, so Batch Processing and SGD, we divide the entire dataset into batches of specific size (ex. 32 data points per batch) we perform the gradient calculations for a single batch and adjust the model weights, then move to the next batch.
+
+\section{Summary}
+
 
 
 \end{document}
