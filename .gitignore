@@ -11,3 +11,7 @@ Hello/
 
 # Ignore .idea
 .idea/
+
+# Ignore out folder, with output PDFs
+out/*
+!out/*.pdf
