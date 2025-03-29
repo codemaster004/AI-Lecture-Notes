@@ -1,13 +1,14 @@
 \documentclass{article}
-
+\usepackage{pifont}
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage{enumitem}
 
 \usepackage[margin=0.6in]{geometry}
 
 \title{Optimization Algorithm's from AI course}
-% \author{Filip Dabkowski}
+\author{Filip Dabkowski, Tomasz Kruczalak, ChatGPT}
 \date{\today}
 
 \begin{document}
@@ -97,7 +98,7 @@ We not only tweak the parameter values on their own but also combinations of bot
 
 \section{Random Walking}
 
-Remember how enumeration was structured checking of all possible values? Now with Random Walking, we take the same range of possible values but instead of all combinations, we pick a random number from each domain of possible values for $a$ and $b$ respectfully, and we check the loss at given random point. We do this $N$ times and pick the pair of $(a, b)$ values that results with the smallest loss.
+Starting from initial point $p_{t=0}$ with a radius as a hyper-parameter, we randomly pick a new point $p_{t+1}$ if the loss at the new point is better than the current point, remember it as the best solution. No matter if the solution is better or worse, we always move to the new solution $p_{t+1}$, and repeat the process.
 
 \section{Random Search}
 
@@ -213,8 +214,56 @@ In practice Gradient Descent has a problem, remember the moment when we sum over
 
 The most commonly used option however is the middle ground, so Batch Processing and SGD, we divide the entire dataset into batches of specific size (ex. 32 data points per batch) we perform the gradient calculations for a single batch and adjust the model weights, then move to the next batch.
 
+\break
+
 \section{Summary}
 
+\textbf{Enumeration} - Useful in small, finite, discrete search spaces where all possible solutions can be evaluated.
 
+\begin{itemize}[label=\ding{51}]
+    \item Guarantees finding the global optimum.
+    \item Simple and easy to implement.
+\end{itemize}
+\begin{itemize}[label=\ding{53}]
+    \item Computationally infeasible for large or continuous spaces.
+    \item Inefficient and slow.
+\end{itemize}
+
+\textbf{Random Walk} - Might be useful for exploring unknown or dynamic search spaces in early-stage experimentation.
+
+\begin{itemize}[label=\ding{51}]
+    \item Simple to implement.
+    \item Can escape local minima due to its random nature.
+\end{itemize}
+\begin{itemize}[label=\ding{53}]
+    \item Inefficient and lacks direction.
+    \item No convergence guarantees.
+\end{itemize}
+
+\textbf{Random Search} - Could be useful but Simulated Annealing exists.\newline
+
+\textbf{Simulated Annealing} - Useful for problems with many local minima, global optimization in large search spaces. Recommended for problems where the loss function is not differentiable.
+
+\begin{itemize}[label=\ding{51}]
+    \item Can escape local optima by accepting worse solutions occasionally.
+    \item Tunable parameters (cooling schedule) can balance exploration and exploitation.
+\end{itemize}
+\begin{itemize}[label=\ding{53}]
+    \item Sensitive to tuning (e.g., cooling rate).
+    \item Slower convergence than gradient methods.
+\end{itemize}
+
+\textbf{Gradient Descent} - USEFUL for continuous and differentiable objective functions, widely used in machine learning.
+
+\begin{itemize}[label=\ding{51}]
+    \item Fast convergence with good tuning.
+    \item Efficient in high dimensions with proper variants (ex. SGD, Adam).
+\end{itemize}
+\begin{itemize}[label=\ding{53}]
+    \item Can get stuck in local minima or saddle points.
+    \item Requires gradient computation and smooth functions.
+\end{itemize}
+
+\textbf{Genetic Algorithms... To be added, stay tuned.}
 
 \end{document}
